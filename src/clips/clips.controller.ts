@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Post, Param, Delete, Patch } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Param,
+  Delete,
+  Patch,
+} from '@nestjs/common';
 import { ClipsService } from './clips.service';
 import { Clip } from './interfaces/clip.interface';
 
@@ -23,7 +31,9 @@ export class ClipsController {
 
   @Delete(':id')
   delete(@Param('id') id: string): object {
-    return this.clipsService.delete(id).length >= 1 ? {message: "L'élément à été supprimé"} : {message: "Rien n'a été supprimé"};
+    return this.clipsService.delete(id).length >= 1
+      ? { message: "L'élément à été supprimé" }
+      : { message: "Rien n'a été supprimé" };
   }
 
   @Patch(':id')
