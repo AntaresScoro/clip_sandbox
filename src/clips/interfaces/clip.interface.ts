@@ -1,5 +1,5 @@
 export interface Clip {
-  _id: number;
+  _id: string;
   title: string;
   description: string;
   url: string;

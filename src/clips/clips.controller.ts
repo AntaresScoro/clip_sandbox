@@ -7,27 +7,27 @@ export class ClipsController {
   constructor(private readonly clipsService: ClipsService) {}
 
   @Post()
-  addClip(@Body() clip: any): any {
+  create(@Body() clip: any): any {
     return this.clipsService.create(clip);
   }
 
   @Get(':id')
-  getOneClip(@Param() params: any): any {
-    return this.clipsService.findOne(Number(params.id));
+  findOne(@Param('id') id: string): Clip | undefined {
+    return this.clipsService.findOne(id);
   }
 
   @Get()
-  getClips(): Clip[] {
+  findAll(): Clip[] {
     return this.clipsService.findAll();
   }
 
   @Delete(':id')
-  delete(@Param() params: any): any {
-    return this.clipsService.delete(Number(params.id)).length >= 1 ? "L'élément à été supprimé" : "Rien n'a été supprimé";
+  delete(@Param('id') id: string): object {
+    return this.clipsService.delete(id).length >= 1 ? {message: "L'élément à été supprimé"} : {message: "Rien n'a été supprimé"};
   }
 
   @Patch(':id')
-  updateClip(@Param()params: any, @Body() clip: any): any {
-    return this.clipsService.updateOne(Number(params.id), clip);
+  update(@Param('id') id: string, @Body() clip: any): Clip | undefined {
+    return this.clipsService.updateOne(id, clip);
   }
 }

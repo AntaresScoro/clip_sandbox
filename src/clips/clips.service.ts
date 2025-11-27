@@ -6,13 +6,13 @@ export class ClipsService {
   private readonly clips: Clip[] = [];
 
   create(clip: Clip) {
-    clip._id = this.clips.length + 1;
+    clip._id = String(Number(this.clips.length) + 1);
     clip._createdAt = new Date();
     this.clips.push(clip);
     return clip;
   }
 
-  findOne(id: number): Clip | undefined {
+  findOne(id: string): Clip | undefined {
     return this.clips.find((clip: Clip) => clip._id === id);
   }
 
@@ -20,11 +20,11 @@ export class ClipsService {
     return this.clips;
   }
 
-  delete(id: number): any {
+  delete(id: string): any {
     return this.clips.splice(this.clips.findIndex((clip: Clip) => clip._id === id), 1);
   }
 
-  updateOne(id: number, clip: Clip): Clip {
+  updateOne(id: string, clip: Clip): Clip {
     const index = this.clips.findIndex((c: Clip) => c._id === id);
 
     if (index === -1) {
