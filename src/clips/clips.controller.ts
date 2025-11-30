@@ -28,7 +28,13 @@ export class ClipsController {
   }
 
   @Get()
-  async findAll(@Query() queryDto: GetClipsQueryDto): Promise<ClipDocument[]> {
+  async findAll(@Query() queryDto: GetClipsQueryDto): Promise<{
+    items: ClipDocument[];
+    total: number;
+    page: number;
+    limit: number;
+    pageCount: number;
+  }> {
     return this.clipsService.findAll(queryDto);
   }
 
