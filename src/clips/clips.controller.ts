@@ -5,11 +5,12 @@ import {
   Post,
   Param,
   Delete,
-  Patch,
+  Patch, Query,
 } from '@nestjs/common';
 import { ClipsService } from './clips.service';
 import { CreateClipDto } from './dto/create-clip.dto';
 import { UpdateClipDto } from './dto/update-clip.dto';
+import { GetClipsQueryDto } from './dto/get-clips-query.dto';
 import { ClipDocument } from './schema/clip.schema';
 
 @Controller('clips')
@@ -27,8 +28,8 @@ export class ClipsController {
   }
 
   @Get()
-  async findAll(): Promise<ClipDocument[]> {
-    return this.clipsService.findAll();
+  async findAll(@Query() queryDto: GetClipsQueryDto): Promise<ClipDocument[]> {
+    return this.clipsService.findAll(queryDto);
   }
 
   @Delete(':id')

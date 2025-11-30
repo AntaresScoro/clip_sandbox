@@ -4,6 +4,7 @@ import { Model } from 'mongoose';
 // import { Clip } from './interfaces/clip.interface';
 import { CreateClipDto } from './dto/create-clip.dto';
 import { UpdateClipDto } from './dto/update-clip.dto';
+import { GetClipsQueryDto } from './dto/get-clips-query.dto';
 import { Clip, ClipDocument } from './schema/clip.schema';
 
 @Injectable()
@@ -21,7 +22,8 @@ export class ClipsService {
     throw new NotFoundException(`Clip with id ${id} not found`);
   }
 
-  async findAll(): Promise<ClipDocument[]> {
+  async findAll(queryDto: GetClipsQueryDto): Promise<ClipDocument[]> {
+    console.log(queryDto);
     return this.clipModel.find().exec();
   }
 
