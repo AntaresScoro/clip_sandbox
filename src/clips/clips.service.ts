@@ -32,32 +32,32 @@ export class ClipsService {
   }> {
     const page = query.page ?? 1;
     const limit = query.limit ?? 10;
-    let filter : Record<string, any> = {};
+    const filter: Record<string, any> = {};
     if (query.streamerName) {
       filter.streamerName = query.streamerName;
     }
     if (query.search) {
-      filter.$or =
-      [
+      filter.$or = [
         { title: new RegExp(query.search, 'i') },
         { description: new RegExp(query.search, 'i') },
-      ]
+      ];
     }
     if (query.isPublished !== undefined) {
       filter.isPublished = query.isPublished;
     }
 
-    const items = await this.clipModel.find(filter)
-    .skip((page - 1) * limit)
-    .limit(limit)
-    .exec();
+    const items = await this.clipModel
+      .find(filter)
+      .skip((page - 1) * limit)
+      .limit(limit)
+      .exec();
     const total = await this.clipModel.countDocuments(filter).exec();
     return {
       items: items,
       total: total,
       page: page,
       limit: limit,
-      pageCount: Math.ceil(total / limit)
+      pageCount: Math.ceil(total / limit),
     };
   }
 
