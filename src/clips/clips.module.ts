@@ -5,8 +5,10 @@ import { ClipsService } from './clips.service';
 import { Clip, ClipSchema } from './schema/clip.schema';
 
 @Module({
-  imports: [MongooseModule.forFeature([{ name: Clip.name, schema: ClipSchema }])],
+  imports: [
+    MongooseModule.forFeature([{ name: Clip.name, schema: ClipSchema }]),
+  ],
   controllers: [ClipsController],
-  providers: [ClipsService]
+  providers: [ClipsService],
 })
 export class ClipsModule {}
