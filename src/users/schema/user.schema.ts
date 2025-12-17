@@ -13,6 +13,9 @@ export class User {
   passwordHash: string;
   @Prop()
   displayName?: string;
+
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
