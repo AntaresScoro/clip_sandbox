@@ -7,19 +7,27 @@ import {
   Patch,
   Post,
   Query,
+  UseGuards,
+  Request,
 } from '@nestjs/common';
 import { ClipsService } from './clips.service';
 import { CreateClipDto } from './dto/create-clip.dto';
 import { UpdateClipDto } from './dto/update-clip.dto';
 import { GetClipsQueryDto } from './dto/get-clips-query.dto';
 import { ClipDocument } from './schema/clip.schema';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 @Controller('clips')
 export class ClipsController {
   constructor(private readonly clipsService: ClipsService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Post()
-  async create(@Body() clip: CreateClipDto): Promise<ClipDocument> {
+  async create(
+    @Request() req,
+    @Body() clip: CreateClipDto,
+  ): Promise<ClipDocument> {
+    console.log(req.user);
     return this.clipsService.create(clip);
   }
 
@@ -50,12 +58,14 @@ export class ClipsController {
     };
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   async delete(@Param('id') id: string): Promise<{ message: string }> {
     await this.clipsService.delete(id);
     return { message: "L'élément à été supprimé" };
   }
 
+  @UseGuards(JwtAuthGuard)
   @Patch(':id')
   async update(
     @Param('id') id: string,
@@ -64,11 +74,13 @@ export class ClipsController {
     return this.clipsService.updateOne(id, clip);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Patch(':id/publish')
   async publish(@Param('id') id: string): Promise<ClipDocument> {
     return this.clipsService.publish(id);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Patch(':id/unpublish')
   async unpublish(@Param('id') id: string): Promise<ClipDocument> {
     return this.clipsService.unpublish(id);
