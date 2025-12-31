@@ -26,7 +26,8 @@ export class Clip {
     required: false,
     index: true,
   })
-  owner: User | mongoose.Types.ObjectId;
+  owner: mongoose.Types.ObjectId;
 }
-
-export const ClipSchema = SchemaFactory.createForClass(Clip);
+const ClipSchema = SchemaFactory.createForClass(Clip);
+ClipSchema.index({ owner: 1, createdAt: -1 });
+export { ClipSchema };

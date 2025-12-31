@@ -13,9 +13,8 @@ export class ClipsService {
     @InjectModel(Clip.name) private readonly clipModel: Model<ClipDocument>,
   ) {}
 
-  async create(clip: CreateClipDto, owner: User): Promise<ClipDocument> {
-    const newClip = { owner: (owner as any).userId, ...clip };
-    console.log(newClip);
+  async create(clip: CreateClipDto, ownerId: string): Promise<ClipDocument> {
+    const newClip = { owner: ownerId, ...clip };
     const createdClip = new this.clipModel(newClip);
     return createdClip.save();
   }
