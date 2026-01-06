@@ -17,10 +17,7 @@ import { GetClipsQueryDto } from './dto/get-clips-query.dto';
 import { ClipDocument } from './schema/clip.schema';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { ClipOwnerGuard } from './guards/clip-owner.guard';
-
-type RequestWithUser = {
-  user: { userId: string };
-};
+import { CurrentUser } from '../auth/decorators/current-user.decorator';
 
 @Controller('clips')
 export class ClipsController {
@@ -29,10 +26,10 @@ export class ClipsController {
   @UseGuards(JwtAuthGuard)
   @Post()
   async create(
-    @Request() req: RequestWithUser,
+    @CurrentUser('userId') userId: string,
     @Body() clip: CreateClipDto,
   ): Promise<ClipDocument> {
-    return this.clipsService.create(clip, req.user.userId);
+    return this.clipsService.create(clip, userId);
   }
 
   @Get(':id')
