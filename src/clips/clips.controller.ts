@@ -18,6 +18,7 @@ import { ClipDocument } from './schema/clip.schema';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { ClipOwnerGuard } from './guards/clip-owner.guard';
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
+import { ClipResponseDto } from './dto/clip-response.dto';
 
 @Controller('clips')
 export class ClipsController {
@@ -32,14 +33,40 @@ export class ClipsController {
     return this.clipsService.create(clip, userId);
   }
 
+  @UseGuards(JwtAuthGuard)
+  @Get('mine')
+  async findMine(
+    @CurrentUser('userId') userId: string,
+    @Query() query: GetClipsQueryDto,
+  ): Promise<{
+    data: ClipResponseDto[];
+    meta: {
+      total: number;
+      page: number;
+      limit: number;
+      pageCount: number;
+    };
+  }> {
+    const clips = await this.clipsService.findMine(userId, query);
+    return {
+      meta: {
+        total: clips.total,
+        page: clips.page,
+        limit: clips.limit,
+        pageCount: clips.pageCount,
+      },
+      data: clips.items,
+    };
+  }
+
   @Get(':id')
-  async findOne(@Param('id') id: string): Promise<ClipDocument> {
+  async findOne(@Param('id') id: string): Promise<ClipResponseDto> {
     return this.clipsService.findOne(id);
   }
 
   @Get()
   async findAll(@Query() query: GetClipsQueryDto): Promise<{
-    data: ClipDocument[];
+    data: ClipResponseDto[];
     meta: {
       total: number;
       page: number;
@@ -49,13 +76,13 @@ export class ClipsController {
   }> {
     const clips = await this.clipsService.findAll(query);
     return {
-      data: clips.items,
       meta: {
         total: clips.total,
         page: clips.page,
         limit: clips.limit,
         pageCount: clips.pageCount,
       },
+      data: clips.items,
     };
   }
 
